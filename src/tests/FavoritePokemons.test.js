@@ -10,4 +10,10 @@ describe('Teste o componente FavoritePokemons', () => {
 
     expect(noFavoFoundText).toBeInTheDocument();
   });
+
+  it('Teste se são exibidos todos os cards de pokémons favoritados.', () => {
+    renderWithRouter(<FavoritePokemons />);
+    const favoritePokemonsList = document.getElementsByClassName('favorite-pokemon');
+    expect(favoritePokemonsList).toHaveLength(0);
+  });
 });
