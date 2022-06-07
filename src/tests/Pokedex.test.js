@@ -7,6 +7,8 @@ import pokemons from '../data';
 
 const IS_FAVORITE = {};
 const MAGIC_NUMBER = 40;
+const POKEMON_TYPES = pokemons.reduce((types, { type }) => [...types, type], []);
+
 const dataTestIdPokeName = 'pokemon-name';
 pokemons.forEach((e) => {
   IS_FAVORITE[e.id] = e.id > MAGIC_NUMBER;
@@ -46,5 +48,26 @@ describe('Teste o componente Pokedex', () => {
     expect(screen.getByTestId(dataTestIdPokeName)).toHaveTextContent(pokemons[0].name);
     expect(screen.getByTestId(dataTestIdPokeName))
       .not.toHaveTextContent(pokemons[1].name);
+  });
+
+  it('Teste se a Pokédex tem os botões de filtro', () => {
+    const EXPECTED_LENGTH = 7;
+
+    expect(screen.getAllByTestId('pokemon-type-button').length).toBe(EXPECTED_LENGTH);
+
+    POKEMON_TYPES.forEach((e) => {
+      expect(screen.getByRole('button',
+        { name: e })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: e })).toHaveTextContent(e);
+    });
+  });
+
+  it('Teste se a Pokédex contém um botão para resetar o filtro:', () => {
+    const resetFilterButton = screen.getByRole('button', { name: /all/i });
+
+    expect(resetFilterButton).toBeInTheDocument();
+    expect(resetFilterButton).toHaveTextContent('All');
+
+    userEvent.click(resetFilterButton);
   });
 });
