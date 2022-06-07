@@ -46,8 +46,12 @@ describe('Teste o componente Pokedex', () => {
 
   it('Teste se é mostrado apenas um pokémon por vez', () => {
     expect(screen.getByTestId(dataTestIdPokeName)).toHaveTextContent(pokemons[0].name);
-    expect(screen.getByTestId(dataTestIdPokeName))
-      .not.toHaveTextContent(pokemons[1].name);
+
+    pokemons.filter((pokemon) => pokemon.id !== pokemons[0].id)
+      .forEach((e) => {
+        expect(screen.getByTestId(dataTestIdPokeName))
+          .not.toHaveTextContent(e.name);
+      });
   });
 
   it('Teste se a Pokédex tem os botões de filtro', () => {
